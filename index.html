@@ -1,0 +1,135 @@
+<html>
+<title> Buenos dias pagina</title>
+<meta charset="UTF-8">
+<link rel="shortcut icon" href="#" />
+<body>
+<div id="langLinks"> </div>
+	<div id="divtoadd" style="background-color: red; float: right; z-index:11; position:absolute"></div>
+<!--	<div style="background-color: red; width: 100%; height: 90%; position:absolute; z-index:10">BUENOS DIAS</div> -->
+	<input type="button" onclick="startMutation()" value="Start mutation"/>
+<div id="renderDivs">
+
+</div>
+
+<textarea rows=20 cols=50></textarea>
+<br>
+	<br>
+	<br>
+	<br>
+	<br>
+	<br>
+	<br>
+	<br>
+	<br>
+	<br>
+	<br>
+	<br>
+	<br>
+	<br>
+	<br>
+	<br>
+	<br>
+	<br>
+	<br>
+	<br>
+	<br>
+	<br>
+	<br>
+	<br>
+	<br>
+	<br>
+	<br>
+	<br>
+	<br>
+	<br>
+	<br>
+	<br>
+	<br>
+	<br>
+	<br>
+	<br>
+	<br>
+	<br>
+	<br>
+	<br>
+	<br>
+	<br>
+	<br>
+	<br>
+	<br>
+	<br>
+	<br>
+	<br>
+	<br>
+	<br>
+	<br>
+	<br>
+	<br>
+	<br>
+	<br>
+	<br>
+	<br>
+	<br>
+	<br>
+	<br>
+	<br>
+	<br>
+	<br>
+	<br>
+	<br>
+	<br>
+	<br>
+	<br>
+	<br>
+	<br>
+	<br>
+	<br>
+
+</body>
+<script>
+
+const langs = new Map();
+const params = new URLSearchParams(location.search);
+const lang = params.get('lang');
+
+function startMutation() {
+	let initialZ = 10;
+	setInterval(() => {
+		initialZ += 1;
+		const para = document.createElement("div");
+		para.innerHTML = langs.get(lang);
+		para.style.zIndex = initialZ;
+
+		document.getElementById("divtoadd").appendChild(para);
+		document.getElementById("divtoadd").style.zIndex = initialZ;
+	}, 1000);
+}
+
+
+function loadLangs() {
+	langs.set("de", "Schwefel (über mittelhochdeutsch swëbel von althochdeutsch swëbal; lateinisch sulpur und gräzisiert Sulphur bzw. Sulfur, wie swëbal vermutlich von einer indogermanischen Wurzel suel- mit der Bedeutung ‚langsam verbrennen‘, woraus im Germanischen <i> auch deutsch „schwelen“ entstand; </i> <div><b> Ende des Textes </b></div>")
+	langs.set("pt", " A principal consequência da pandemia e de novos casos de gripe observada no setor de construção no Brasil foi o afastamento de funcionários dos canteiros de obra. É o que mostra pesquisa da <i> CBIC (Câmara Brasileira da Indústria da Construção) divulgada hoje.  </i>. <div> <b> Fim do texto. </b> </div>")
+	langs.set("es", " La Gran Dimisión y el nuevo principio vital: tú no eres tu trabaj ¿A qué obedece este fenómeno que ha surgido en Estados Unidos? ¿Por qué hay tanta gente que deja o quiere dejar su empleo?  </i>. <div> <b> Fin del texto. </b> </div>")
+	langs.set("et", " Eesti pindala on tänapäeval 45 339 ruutkilomeetrit, teise maailmasõja eel oli see praegusest suurem.[5] Kaugemas ajaloos oli nüüdne Eesti territoorium osa Liivimaa territooriumist ning kuulus osaliselt või täielikult Saksa, Rootsi, Vene, Taani ja Poola riigi koosseisu.   </i>. <div> <b> teksti lõpp </b> </div>")
+	langs.set("en", "Estonia (Estonian: Eesti [ˈeːsʲti] (audio speaker iconlisten)), officially the Republic of Estonia (Estonian: Eesti Vabariik), is a country in northern Europe. It is bordered to the north by the Gulf of Finland across from Finland, to <a href='#'> the west by the Baltic Sea across from Sweden, </a> to the south by Latvia, and to the east by Lake Peipus and Russia. <div> <b> End of text  </b> </div> ");
+	langs.set("it", "L'Estonia (in lingua estone: Eesti), ufficialmente Repubblica d'Estonia (in lingua estone: Eesti Vabariik), con capitale Tallinn, è una repubblica parlamentare situata nell'Europa nord-orientale, confinante a est con la Russia e a sud con la Lettonia e bagnata a nord e a ovest dal Mar Baltico, che la separa dalla Finlandia e dalla Svezia.  <div> <b> fine del testo. </b> </div> ");
+	langs.set("ru","Украинский нацгвардцеец Артемий Рябчук застрелил пять человек в Днепре. Что известно о нем и его мотивах  <div> <b> конец текста </b> </div>  ");
+	langs.set("cs","Síra (chemická značka S, latinsky Sulphur) je nekovový chemický prvek žluté barvy, poměrně hojně zastoupený v přírodě. Patří do skupiny chalkogenů.  <div> <b> konec textu  </b> </div>  ");
+}
+
+
+function renderDivs() {
+	loadLangs();
+	document.getElementById("renderDivs").innerHTML = langs.get(lang);
+	langs.forEach((value, key, map) => {
+		const a = document.createElement('a');
+        a.setAttribute('href', '/?lang=' + key);
+		a.innerHTML = key + "  ";
+		langLinks.appendChild(a);
+	});
+}
+
+renderDivs();
+
+	</script>
+</html>
