@@ -120,13 +120,15 @@ function loadLangs() {
 
 function renderDivs() {
 	loadLangs();
-	document.getElementById("renderDivs").innerHTML = langs.get(lang);
 	langs.forEach((value, key, map) => {
 		const a = document.createElement('a');
         a.setAttribute('href', '?lang=' + key);
 		a.innerHTML = key + "  ";
 		langLinks.appendChild(a);
 	});
+
+	if (langs.get(lang)) document.getElementById("renderDivs").innerHTML = langs.get(lang);
+
 }
 
 renderDivs();
