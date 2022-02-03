@@ -105,7 +105,13 @@ function startMutation() {
 		para.style.zIndex = initialZ;
 
 		document.getElementById("divtoadd").appendChild(para);
+		document.getElementById("divtoadd").appendChild(document.createElement("textarea"));
 		document.getElementById("divtoadd").style.zIndex = initialZ;
+
+		var input = document.createElement("input");
+		input.type = "text";
+		document.getElementById("divtoadd").appendChild(input); // put it into the DOM
+
 	}, 1000);
 }
 

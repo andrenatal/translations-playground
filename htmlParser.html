@@ -1,0 +1,133 @@
+<html>
+<body>
+<!--
+Body text solto
+<b>Bloco 1</b>
+<i> Bloco 2</i>
+<p id="pTeste">Bloco 3
+    <div id="divTeste">
+       <b><i> Bloco 4 </i></b>
+       <div>Bloco 5</div>
+       <div><strong><i>Bloco 6</i></strong></div>
+</p>
+
+<p id="pTeste7"><i>Bloco 7 </i></p>
+-->
+<script>
+
+const forbiddenTags = new Set();
+forbiddenTags.add("script");
+forbiddenTags.add("style");
+forbiddenTags.add("iframe");
+
+function startTreeWalker(root) {
+        const acceptNode = node => {
+            //console.log('validating this currentnode', node, node.innerHTML);
+            return this.validateNode(node);
+        }
+
+        const nodeIterator = document.createNodeIterator(
+            root,
+            // eslint-disable-next-line no-bitwise
+            NodeFilter.SHOW_ELEMENT,
+            acceptNode
+        );
+
+        let currentNode;
+        // eslint-disable-next-line no-cond-assign
+        while (currentNode = nodeIterator.nextNode()) {
+            console.log('translate this currentnode', currentNode, currentNode.innerHTML);
+        }
+}
+
+function setAllNodesAsParsing(parentNode) {
+    Array.from(parentNode.childNodes).forEach (node => {
+        if (node.nodeType == 1) {
+            node.setAttribute("fxtParsing", "1");
+            if (node.innerHTML.length > 0) {
+                setAllNodesAsParsing(node);
+            }
+        }
+    });
+}
+
+function isValidSnippet(htmlString) {
+    // first we check if there's any html tags in the string
+    let regex = new RegExp("<(.*)>.*?|<(.*) />", "gi");
+    let matches = regex.exec(htmlString);
+    // if there's no html, let's just let it pass
+    if (!matches) return true;
+    // then we check if the html is valid or not
+    const parser = new DOMParser();
+    const doc = parser.parseFromString(htmlString, "text/xml");
+    const errorNode = doc.querySelector('parsererror');
+    return !errorNode;
+}
+
+function validateNode(node) {
+    if (forbiddenTags.has(node.tagName.toLowerCase()) ||
+        node.hasAttribute("fxtParsing")){
+        return NodeFilter.FILTER_REJECT;
+    }
+    if (node.nodeName === "BODY") {
+        // in the  case of body, let's just translate it's lingering
+        // textnodes
+        // TODO
+        if (node.firstChild.nodeType == 3) {
+            console.log('translate just the bodyy and reject the walker', node.firstChild.textContent);
+        }
+        return NodeFilter.FILTER_REJECT;
+    }
+    // we want to inspect only element nodes
+    if (node.nodeType != 1) {
+        return NodeFilter.FILTER_REJECT;
+    }
+
+    // first we check if the element contains an innerhtml that's valid
+    if (node.innerHTML.length > 0 &&
+        isValidSnippet(node.innerHTML)) {
+        // then we check if this element was already parsed.
+        // if not, we set its fxtParsing attribute
+        node.setAttribute("fxtParsing", "1");
+        // then iterate through all child nodes that contains
+        // innerHTML set their fxtParsing as well
+        if (node.children.length > 0) setAllNodesAsParsing(node);
+        // and then we accept it
+        return NodeFilter.FILTER_ACCEPT;
+    }
+    // and we reject by default
+    return NodeFilter.FILTER_REJECT;
+}
+
+</script>
+<pre>
+
+    body {
+        color: red;
+      }
+
+</pre>
+<!--
+<table>
+    <tr><td>Bloco 8</td></tr>
+    <tr><td>Bloco 9</td></tr>
+</table>
+<span>Bloco 10</span>
+<a href="#">Bloco 11</a> -->
+<span><a href="#"><b id="b1"><i>Bloco 12</i>Bloco 13<b id="b2"></a></span>
+
+<div> div perdida
+    texto no final antes do fim do body
+
+<style id="style">
+    body {background-color: powderblue;}
+    h1   {color: blue;}
+    p    {color: red;}
+    </style>
+<iframe id="iframe">aqui</iframe>
+
+<script>
+    startTreeWalker(document.body);
+</script>
+</body>
+</html>
